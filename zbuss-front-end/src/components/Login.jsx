@@ -1,9 +1,12 @@
+import { useNavigate } from 'react-router-dom';
 import React,{useState} from 'react';
 import axios from 'axios';
 import { mostrarAlerta } from '../function'; 
 import oZbussConfiguration from '../settingsApi.json';
 
-const Login = () => {
+const Login = ({ setUser }) => {
+
+    const navigate = useNavigate();
 
     const url= oZbussConfiguration.ServiceApiUrl;
     const [correo, setCorreo]=useState('');
@@ -35,6 +38,8 @@ const Login = () => {
                 }
                 else if(indicador ==='1'){
                     mostrarAlerta(mensaje, 'success');
+                    setUser({"Correo": correo, "Contrasena": contrasena});
+                    navigate('/');
                 }
             }
         )

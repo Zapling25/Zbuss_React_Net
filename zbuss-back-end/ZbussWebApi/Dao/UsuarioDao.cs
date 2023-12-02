@@ -21,7 +21,6 @@ namespace ZbussWebApi.Dao
             string connectionString = _configuration.GetConnectionString("cadenaSql");
 
             string res = "0";
-            string contrasenaBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(usuario.Contrasena));
             try
             {
                 using (SqlConnection cn = new SqlConnection(connectionString))
@@ -34,7 +33,7 @@ namespace ZbussWebApi.Dao
                     cmd.Parameters.Add("@PARAM_VC_NOMBRES", SqlDbType.VarChar).Value = usuario.Nombres;
                     cmd.Parameters.Add("@PARAM_VC_APELLIDOS", SqlDbType.VarChar).Value = usuario.Apellidos;
                     cmd.Parameters.Add("@PARAM_VC_CORREO", SqlDbType.VarChar).Value = usuario.Correo;
-                    cmd.Parameters.Add("@PARAM_VC_CONTRASENA", SqlDbType.VarChar).Value = contrasenaBase64;
+                    cmd.Parameters.Add("@PARAM_VC_CONTRASENA", SqlDbType.VarChar).Value = usuario.Contrasena;
 
                     int result = cmd.ExecuteNonQuery();
                     if (result == 1) { res = "1"; }
@@ -80,7 +79,6 @@ namespace ZbussWebApi.Dao
             string connectionString = _configuration.GetConnectionString("cadenaSql");
 
             string res = "0";
-            string contrasenaBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(usuario.Contrasena));
             try
             {
                 using (SqlConnection cn = new SqlConnection(connectionString))
@@ -92,7 +90,7 @@ namespace ZbussWebApi.Dao
                     cmd.Parameters.Add("@PARAM_VC_NOMBRES", SqlDbType.VarChar).Value = usuario.Nombres;
                     cmd.Parameters.Add("@PARAM_VC_APELLIDOS", SqlDbType.VarChar).Value = usuario.Apellidos;
                     cmd.Parameters.Add("@PARAM_VC_CORREO", SqlDbType.VarChar).Value = usuario.Correo;
-                    cmd.Parameters.Add("@PARAM_VC_CONTRASENA", SqlDbType.VarChar).Value = contrasenaBase64;
+                    cmd.Parameters.Add("@PARAM_VC_CONTRASENA", SqlDbType.VarChar).Value = usuario.Contrasena;
 
                     int result = cmd.ExecuteNonQuery();
                     if (result == 1) { res = "1"; }

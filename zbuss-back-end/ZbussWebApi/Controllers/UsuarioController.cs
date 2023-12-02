@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Text;
 using ZbussWebApi.Dao;
 using ZbussWebApi.Interfaz;
 using ZbussWebApi.Models;
@@ -34,6 +35,8 @@ namespace ZbussWebApi.Controllers
             ResponseUsuario res = new ResponseUsuario();
             res.IndicadorRespuesta = "0";
             res.MensajeRespuesta = "No se guardo el usuario";
+
+            oUsuario.Contrasena = Convert.ToBase64String(Encoding.UTF8.GetBytes(oUsuario.Contrasena));
 
             if (oUsuario.Id == 0)
             {

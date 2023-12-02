@@ -21,7 +21,6 @@ namespace ZbussWebApi.Dao
             string connectionString = _configuration.GetConnectionString("cadenaSql");
 
             LoginResponse res = new LoginResponse();
-            string contrasenaBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(Contrasena));
             try
             {
                 using (SqlConnection cn = new SqlConnection(connectionString))
@@ -31,7 +30,7 @@ namespace ZbussWebApi.Dao
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandText = @"ZB_SP_API_VALIDAR_CREDENCIALES_SEL";
                     cmd.Parameters.Add("@PARAM_VC_CORREO", SqlDbType.VarChar).Value = Correo;
-                    cmd.Parameters.Add("@PARAM_VC_CONTRASENA", SqlDbType.VarChar).Value = contrasenaBase64;
+                    cmd.Parameters.Add("@PARAM_VC_CONTRASENA", SqlDbType.VarChar).Value = Contrasena;
 
                     int result = cmd.ExecuteNonQuery();
 

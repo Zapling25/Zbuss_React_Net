@@ -2,7 +2,12 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import '../css/Zbuss.css'
 
-const navbar = () => {
+const navbar = ({ user, setUser }) => {
+
+    const LogOut = () => {
+        setUser(null);
+    }
+
     return (
         <div>
             <nav className="navbar navbar-dark navbar-expand-lg zb-bg-dark">
@@ -13,15 +18,28 @@ const navbar = () => {
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav">
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/login">Iniciar Sesión</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/bus">Buses</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/usuario">Usuarios</Link>
-                            </li>
+                            {user != null ? (
+                                <>
+                                <li className="nav-item">
+                                    <span className='nav-link'>{user.Correo}</span>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" onClick={LogOut} to="/">Cerrar Sesion</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/bus">Buses</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/usuario">Usuarios</Link>
+                                </li>
+                                </>
+                            ) :
+                                <>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/login">Iniciar Sesión</Link>
+                                </li>
+                                </>
+                            }
                         </ul>
                     </div>
                 </div>
