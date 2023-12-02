@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { mostrarAlerta } from '../function'; 
 import oZbussConfiguration from '../settingsApi.json';
+import '../css/Zbuss.css';
 
 const ListarUsuarios = () => {
     const url= oZbussConfiguration.ServiceApiUrl;
@@ -12,6 +13,7 @@ const ListarUsuarios = () => {
     const [nombre, setNombre]=useState('');
     const [apellido, setApellido]=useState('');
     const [correo, setCorreo]=useState('');
+    const [contrasena, setContrasena]=useState('');
     
     const [operacion, setOperacion]=useState(1);
     const [titulo, setTitulo]=useState('');
@@ -25,11 +27,12 @@ const ListarUsuarios = () => {
         const respuesta = await axios.get(url + "/usuario/listar");
         setUsuarios(respuesta.data);
     }
-    const openModal = (op,id,nombre,apellido,correo) =>{
+    const openModal = (op,id,nombre,apellido,correo,contrasena) =>{
         setId('');
         setNombre('');
         setApellido('');
         setCorreo('');
+        setContrasena('');
         setOperacion(op);
         if(op === 1){
             setTitulo('Registrar Usuario');
@@ -40,6 +43,7 @@ const ListarUsuarios = () => {
             setNombre(nombre);
             setApellido(apellido);
             setCorreo(correo);
+            setContrasena(contrasena);
         }
         window.setTimeout(function(){
             document.getElementById('nombre').focus();
@@ -56,12 +60,16 @@ const ListarUsuarios = () => {
         else if(correo.trim() === ''){
             mostrarAlerta('Escribe el correo del Usuario','warning');
         }
+        else if(contrasena.trim() === ''){
+            mostrarAlerta('Escribe una contraseña para el Usuario','warning');
+        }
         else{
             if(operacion === 1){
                 parametros = {
                     Nombres:nombre.trim().toUpperCase(),
                     Apellidos:apellido.trim().toUpperCase(),
-                    Correo:correo.trim()
+                    Correo:correo.trim(),
+                    Contrasena:contrasena.trim()
                 }
             }
             else{
@@ -69,30 +77,28 @@ const ListarUsuarios = () => {
                     Id:id,
                     Nombres:nombre.trim().toUpperCase(),
                     Apellidos:apellido.trim().toUpperCase(),
-                    Correo:correo.trim()
+                    Correo:correo.trim(),
+                    Contrasena:contrasena.trim()
                 }
             }
             enviarSolicitud('POST','/usuario/guardar',parametros);
         }
     }
     const enviarSolicitud = async(metodo,ruta,parametros) => {
-        await axios({ 
-            method: metodo,
-            url: url + ruta,
-            data: parametros,
-            })
+        await axios({ method: metodo, url: url + ruta, data: parametros,})
             .then(function(respuesta){
-            var indicador = respuesta.data.indicadorRespuesta;
-            var msj = respuesta.data.mensajeRespuesta;
-            if(indicador === "1"){
-                mostrarAlerta(msj,'success');
-                document.getElementById('btnCerrar').click();
-                getUsuarios();
+                var indicador = respuesta.data.indicadorRespuesta;
+                var msj = respuesta.data.mensajeRespuesta;
+                if(indicador === "1"){
+                    mostrarAlerta(msj,'success');
+                    document.getElementById('btnCerrar').click();
+                    getUsuarios();
+                }
+                else{
+                    mostrarAlerta(msj,'warning');
+                }
             }
-            else{
-                mostrarAlerta(msj,'warning');
-            }
-        })
+        )
         .catch(function(error){
             mostrarAlerta('Error en la solicitud','error');
             console.log(error);
@@ -123,7 +129,7 @@ const ListarUsuarios = () => {
             <div className='row mt-3'>
                 <div className='col-md-4 offset-4'>
                     <div className='d-grid mx-auto'>
-                        <button onClick={() => openModal(1)} className='btn btn-dark' data-bs-toggle='modal' data-bs-target='#modalUsuarios'>
+                        <button onClick={() => openModal(1)} className='btn btn-dark zb-bg-light' data-bs-toggle='modal' data-bs-target='#modalUsuarios'>
                             <i className='fa-solid fa-circle-plus'></i> Añadir
                         </button>
                     </div>
@@ -139,6 +145,7 @@ const ListarUsuarios = () => {
                                     <th>NOMBRES</th>
                                     <th>APELLIDOS</th>
                                     <th>CORREO</th>
+                                    <th>CONTRASEÑA</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -149,8 +156,9 @@ const ListarUsuarios = () => {
                                         <td>{usuario.nombres}</td>
                                         <td>{usuario.apellidos}</td>
                                         <td>{usuario.correo}</td>
+                                        <td>{usuario.contrasena}</td>
                                         <td>
-                                            <button onClick={() => openModal(2,usuario.id,usuario.nombres,usuario.apellidos,usuario.correo)} 
+                                            <button onClick={() => openModal(2,usuario.id,usuario.nombres,usuario.apellidos,usuario.correo,usuario.contrasena)} 
                                                 className='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalUsuarios'>
                                                 <i className='fa-solid fa-edit'></i>
                                             </button>
@@ -190,6 +198,11 @@ const ListarUsuarios = () => {
                             <span className='input-group-text'><i className='fa-solid fa-envelope'></i></span>
                             <input type="text" id='correo' className='form-control' placeholder='Correo electrónico' value={correo} 
                             onChange={(e)=> setCorreo(e.target.value)}/>
+                        </div>
+                        <div className='input-group mb-3'>
+                            <span className='input-group-text'><i className='fa-solid fa-lock'></i></span>
+                            <input type="text" id='contrasena' className='form-control' placeholder='Contraseña' value={contrasena} 
+                            onChange={(e)=> setContrasena(e.target.value)}/>
                         </div>
                         <div className='d-grid col-6 mx-auto'>
                             <button onClick={() => validar()} className='btn btn-success'>

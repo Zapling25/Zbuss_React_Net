@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text;
 using ZbussWebApi.Interfaz;
 using ZbussWebApi.Models;
 
@@ -20,6 +21,7 @@ namespace ZbussWebApi.Dao
             string connectionString = _configuration.GetConnectionString("cadenaSql");
 
             string res = "0";
+            string contrasenaBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(usuario.Contrasena));
             try
             {
                 using (SqlConnection cn = new SqlConnection(connectionString))
@@ -32,6 +34,7 @@ namespace ZbussWebApi.Dao
                     cmd.Parameters.Add("@PARAM_VC_NOMBRES", SqlDbType.VarChar).Value = usuario.Nombres;
                     cmd.Parameters.Add("@PARAM_VC_APELLIDOS", SqlDbType.VarChar).Value = usuario.Apellidos;
                     cmd.Parameters.Add("@PARAM_VC_CORREO", SqlDbType.VarChar).Value = usuario.Correo;
+                    cmd.Parameters.Add("@PARAM_VC_CONTRASENA", SqlDbType.VarChar).Value = contrasenaBase64;
 
                     int result = cmd.ExecuteNonQuery();
                     if (result == 1) { res = "1"; }
@@ -77,6 +80,7 @@ namespace ZbussWebApi.Dao
             string connectionString = _configuration.GetConnectionString("cadenaSql");
 
             string res = "0";
+            string contrasenaBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(usuario.Contrasena));
             try
             {
                 using (SqlConnection cn = new SqlConnection(connectionString))
@@ -88,6 +92,7 @@ namespace ZbussWebApi.Dao
                     cmd.Parameters.Add("@PARAM_VC_NOMBRES", SqlDbType.VarChar).Value = usuario.Nombres;
                     cmd.Parameters.Add("@PARAM_VC_APELLIDOS", SqlDbType.VarChar).Value = usuario.Apellidos;
                     cmd.Parameters.Add("@PARAM_VC_CORREO", SqlDbType.VarChar).Value = usuario.Correo;
+                    cmd.Parameters.Add("@PARAM_VC_CONTRASENA", SqlDbType.VarChar).Value = contrasenaBase64;
 
                     int result = cmd.ExecuteNonQuery();
                     if (result == 1) { res = "1"; }
@@ -96,7 +101,7 @@ namespace ZbussWebApi.Dao
             }
             catch (Exception ex)
             {
-                throw;
+                res = "0";
             }
             return res;
         }
@@ -125,6 +130,8 @@ namespace ZbussWebApi.Dao
                             oUsuario.Nombres = (reader["VC_NOMBRES"] == DBNull.Value) ? String.Empty : Convert.ToString(reader["VC_NOMBRES"]);
                             oUsuario.Apellidos = (reader["VC_APELLIDOS"] == DBNull.Value) ? String.Empty : Convert.ToString(reader["VC_APELLIDOS"]);
                             oUsuario.Correo = (reader["VC_CORREO"] == DBNull.Value) ? String.Empty : Convert.ToString(reader["VC_CORREO"]);
+                            string contrasenaBase64 = (reader["VC_CONTRASENA"] == DBNull.Value) ? String.Empty : Convert.ToString(reader["VC_CONTRASENA"]);
+                            oUsuario.Contrasena = Encoding.UTF8.GetString(Convert.FromBase64String(contrasenaBase64));
 
                             lstUsuarios.Add(oUsuario);
                         }
