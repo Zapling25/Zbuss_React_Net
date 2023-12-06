@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {Routes, Route, BrowserRouter, Navigate} from "react-router-dom";
 import Inicio from "./components/Inicio";
 import Login from "./components/Login";
@@ -8,7 +8,21 @@ import Navbar from "./navegacion/Navbar";
 
 function App() {
 
-  const [user, setUser] = useState('');
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : "";
+  });
+
+  useEffect(() => {
+    // Almacena el usuario en el almacenamiento local cada vez que cambia
+    localStorage.setItem("user", JSON.stringify(user));
+  }, [user]);
+
+  const PrivateRoute = ({ component: Component, }) => {
+    return (
+      <>{ user ? Component : <Navigate to="/login" /> }</>
+    );
+  };
 
   return (
     <BrowserRouter>
@@ -16,12 +30,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Inicio></Inicio>}></Route>
         <Route path="/login" element={<Login setUser={setUser} ></Login>}></Route>
-        {user !== '' ? (
-          <>
-          <Route path="/bus" element={<ListarBuses ></ListarBuses>}></Route>
-          <Route path="/usuario" element={<ListarUsuarios ></ListarUsuarios>}></Route>
-          </>
-          ) : <><Route path="*" element={<Navigate to="/login" />} /></>}
+        <Route path="/bus" element={<PrivateRoute component={<ListarBuses ></ListarBuses>}></PrivateRoute>}></Route>
+        <Route path="/usuario" element={<PrivateRoute component={<ListarUsuarios ></ListarUsuarios>}></PrivateRoute>}></Route>
       </Routes>
     </BrowserRouter>
   );
