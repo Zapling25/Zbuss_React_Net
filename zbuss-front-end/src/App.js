@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {Routes, Route, BrowserRouter} from "react-router-dom";
+import {Routes, Route, BrowserRouter, Navigate} from "react-router-dom";
 import Inicio from "./components/Inicio";
 import Login from "./components/Login";
 import ListarUsuarios from './components/ListarUsuarios';
@@ -8,7 +8,7 @@ import Navbar from "./navegacion/Navbar";
 
 function App() {
 
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState('');
 
   return (
     <BrowserRouter>
@@ -16,8 +16,12 @@ function App() {
       <Routes>
         <Route path="/" element={<Inicio></Inicio>}></Route>
         <Route path="/login" element={<Login setUser={setUser} ></Login>}></Route>
-        <Route path="/bus" element={<ListarBuses></ListarBuses>}></Route>
-        <Route path="/usuario" element={<ListarUsuarios></ListarUsuarios>}></Route>
+        {user !== '' ? (
+          <>
+          <Route path="/bus" element={<ListarBuses ></ListarBuses>}></Route>
+          <Route path="/usuario" element={<ListarUsuarios ></ListarUsuarios>}></Route>
+          </>
+          ) : <><Route path="*" element={<Navigate to="/login" />} /></>}
       </Routes>
     </BrowserRouter>
   );

@@ -41,6 +41,17 @@ namespace ZbussWebApi.Dao
                             res.Indicador = (reader["CH_INDICADOR"] == DBNull.Value) ? String.Empty : Convert.ToString(reader["CH_INDICADOR"]);
                             res.Mensaje = (reader["VC_MENSAJE"] == DBNull.Value) ? String.Empty : Convert.ToString(reader["VC_MENSAJE"]);
                         }
+                        if (reader.NextResult())
+                        {
+                            while (reader.Read())
+                            {
+                                res.Usuario = new Usuario();
+                                res.Usuario.Nombres = (reader["VC_NOMBRES"] == DBNull.Value) ? String.Empty : Convert.ToString(reader["VC_NOMBRES"]);
+                                res.Usuario.Apellidos = (reader["VC_APELLIDOS"] == DBNull.Value) ? String.Empty : Convert.ToString(reader["VC_APELLIDOS"]);
+                                res.Usuario.Correo = (reader["VC_CORREO"] == DBNull.Value) ? String.Empty : Convert.ToString(reader["VC_CORREO"]);
+                                res.Usuario.Contrasena = (reader["VC_CONTRASENA"] == DBNull.Value) ? String.Empty : Convert.ToString(reader["VC_CONTRASENA"]);
+                            }
+                        }
                     }
                     cn.Close();
                 }

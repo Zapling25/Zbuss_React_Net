@@ -5,7 +5,7 @@ import '../css/Zbuss.css'
 const navbar = ({ user, setUser }) => {
 
     const LogOut = () => {
-        setUser(null);
+        setUser('');
     }
 
     return (
@@ -18,10 +18,10 @@ const navbar = ({ user, setUser }) => {
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav">
-                            {user != null ? (
+                            {user !== '' ? (
                                 <>
                                 <li className="nav-item">
-                                    <span className='nav-link'>{user.Correo}</span>
+                                    <span className='nav-link'>{user.NombreCompleto}</span>
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link" onClick={LogOut} to="/">Cerrar Sesion</Link>

@@ -33,12 +33,15 @@ const Login = ({ setUser }) => {
             .then(function(respuesta){
                 var indicador = respuesta.data.indicador;
                 var mensaje = respuesta.data.mensaje;
+                var usuarioDatos = respuesta.data.usuario;
                 if(indicador === '0'){
                     mostrarAlerta(mensaje, 'error');
                 }
                 else if(indicador ==='1'){
                     mostrarAlerta(mensaje, 'success');
-                    setUser({"Correo": correo, "Contrasena": contrasena});
+                    setUser({"NombreCompleto": usuarioDatos.nombres + ' ' + usuarioDatos.apellidos,
+                             "Correo": usuarioDatos.correo,
+                             "Contrasena": usuarioDatos.contrasena});
                     navigate('/');
                 }
             }
