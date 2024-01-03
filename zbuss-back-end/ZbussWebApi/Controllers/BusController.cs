@@ -1,51 +1,49 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System.Text;
 using ZbussWebApi.Dao;
 using ZbussWebApi.Interfaz;
+using ZbussWebApi.Models;
 using ZbussWebApi.Models.ApiProxy;
-using ZbussWebApi.Models.Usuario;
+using ZbussWebApi.Models.Bus;
 
 namespace ZbussWebApi.Controllers
 {
     [ApiController]
-    [Route("usuario")]
-    public class UsuarioController : ControllerBase
+    [Route("bus")]
+    public class BusController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
-        private readonly IUsuarioDao _usuarioDao;
+        private readonly IBusDao _busDao;
 
-        public UsuarioController(IConfiguration configuration, IUsuarioDao usuarioDao)
+        public BusController(IBusDao busDao)
         {
-            _configuration = configuration;
-            _usuarioDao = usuarioDao;
+            _busDao = busDao;
         }
 
         [HttpGet]
         [Route("listar")]
-        public List<Usuario> ListarUsuarios()
+        public List<Bus> ListarBuses()
         {
-            List<Usuario> lstUsuarios = new List<Usuario>();
-            lstUsuarios = _usuarioDao.ListarUsuario();
-            return lstUsuarios;
+            List<Bus> lstBuses = new List<Bus>();
+            lstBuses = _busDao.ListarBuses();
+            return lstBuses;
         }
 
         [HttpPost]
         [Route("guardar")]
-        public ResponseModel GuardarUsuario(Usuario oUsuario)
+        public ResponseModel GuardarBus(Bus oBus)
         {
             ResponseModel res = new ResponseModel();
             res.IndicadorRespuesta = "0";
-            res.MensajeRespuesta = "No se guardo el usuario";
+            res.MensajeRespuesta = "No se guardo el bus";
 
-            oUsuario.Contrasena = Convert.ToBase64String(Encoding.UTF8.GetBytes(oUsuario.Contrasena));
-
-            if (oUsuario.Id == 0)
+            if (oBus.Id == 0)
             {
-                res.IndicadorRespuesta = _usuarioDao.GuardarUsuario(oUsuario);
+                res.IndicadorRespuesta = _busDao.GuardarBus(oBus);
 
                 if (res.IndicadorRespuesta == "0")
                 {
-                    res.MensajeRespuesta = "Ya hay una cuenta con ese correo. Intente con otro";
+                    res.MensajeRespuesta = "Ya hay un bus con esa placa. Intente con otro";
                 }
                 else
                 {
@@ -54,11 +52,11 @@ namespace ZbussWebApi.Controllers
             }
             else
             {
-                res.IndicadorRespuesta = _usuarioDao.ActualizarUsuario(oUsuario);
+                res.IndicadorRespuesta = _busDao.ActualizarBus(oBus);
 
                 if (res.IndicadorRespuesta == "0")
                 {
-                    res.MensajeRespuesta = "No se encontró el usuario";
+                    res.MensajeRespuesta = "No se encontró el bus";
                 }
                 else
                 {
@@ -70,11 +68,11 @@ namespace ZbussWebApi.Controllers
 
         [HttpPost]
         [Route("eliminar")]
-        public ResponseModel EliminarUsuario(int Id)
+        public ResponseModel EliminarBus(int Id)
         {
             ResponseModel res = new ResponseModel();
 
-            res.IndicadorRespuesta = _usuarioDao.EliminarUsuario(Id);
+            res.IndicadorRespuesta = _busDao.EliminarBus(Id);
 
             if (res.IndicadorRespuesta == "0")
             {

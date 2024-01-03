@@ -186,22 +186,28 @@ const ListarUsuarios = () => {
                         <input type="hidden" id='id'></input>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'><i className='fa-solid fa-user'></i></span>
-                            <input type="text" id='nombre' className='form-control' placeholder='Nombre' value={nombre} 
-                            onChange={(e)=> setNombre(e.target.value)}/>
+                            <input type="text" id='nombre' className='form-control' placeholder='Nombre' maxLength={50} value={nombre} 
+                            onChange={(e) => {
+                                const inputValue = e.target.value.replace(/[^A-Za-z]/g, '');
+                                setNombre(inputValue.toUpperCase());
+                            }}/>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'><i className='fa-solid fa-address-card'></i></span>
-                            <input type="text" id='apellido' className='form-control' placeholder='Apellido' value={apellido} 
-                            onChange={(e)=> setApellido(e.target.value)}/>
+                            <input type="text" id='apellido' className='form-control' placeholder='Apellido' maxLength={80} value={apellido} 
+                            onChange={(e)=> {
+                                const inputValue = e.target.value.replace(/[^A-Za-z]/g, '');
+                                setApellido(inputValue.toUpperCase());
+                            }}/>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'><i className='fa-solid fa-envelope'></i></span>
-                            <input type="text" id='correo' className='form-control' placeholder='Correo electrónico' value={correo} 
+                            <input type="text" id='correo' className='form-control' placeholder='Correo electrónico' maxLength={50} value={correo} 
                             onChange={(e)=> setCorreo(e.target.value)}/>
                         </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'><i className='fa-solid fa-lock'></i></span>
-                            <input type="text" id='contrasena' className='form-control' placeholder='Contraseña' value={contrasena} 
+                            <input type="text" id='contrasena' className='form-control' placeholder='Contraseña' maxLength={100} value={contrasena} 
                             onChange={(e)=> setContrasena(e.target.value)}/>
                         </div>
                         <div className='d-grid col-6 mx-auto'>

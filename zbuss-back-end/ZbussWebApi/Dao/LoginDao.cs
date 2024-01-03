@@ -4,6 +4,7 @@ using ZbussWebApi.Interfaz;
 using ZbussWebApi.Models;
 using ZbussWebApi.Models.Login;
 using System.Text;
+using ZbussWebApi.Models.Usuario;
 
 namespace ZbussWebApi.Dao
 {

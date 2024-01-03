@@ -1,22 +1,23 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Data.SqlClient;
 using System.Data;
-using System.Data.SqlClient;
 using System.Text;
 using ZbussWebApi.Interfaz;
+using ZbussWebApi.Models;
+using ZbussWebApi.Models.Bus;
 using ZbussWebApi.Models.Usuario;
 
 namespace ZbussWebApi.Dao
 {
-    public class UsuarioDao : IUsuarioDao
+    public class BusDao : IBusDao
     {
         private readonly IConfiguration _configuration;
 
-        public UsuarioDao(IConfiguration configuration)
+        public BusDao(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
-        public string ActualizarUsuario(Usuario usuario)
+        public string ActualizarBus(Bus oBus)
         {
             string connectionString = _configuration.GetConnectionString("cadenaSql");
 
@@ -28,69 +29,11 @@ namespace ZbussWebApi.Dao
                     SqlCommand cmd = cn.CreateCommand();
                     cn.Open();
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandText = @"ZB_SP_API_UPD_USUARIO";
-                    cmd.Parameters.Add("@PARAM_IN_ID_USUARIO", SqlDbType.VarChar).Value = usuario.Id;
-                    cmd.Parameters.Add("@PARAM_VC_NOMBRES", SqlDbType.VarChar).Value = usuario.Nombres;
-                    cmd.Parameters.Add("@PARAM_VC_APELLIDOS", SqlDbType.VarChar).Value = usuario.Apellidos;
-                    cmd.Parameters.Add("@PARAM_VC_CORREO", SqlDbType.VarChar).Value = usuario.Correo;
-                    cmd.Parameters.Add("@PARAM_VC_CONTRASENA", SqlDbType.VarChar).Value = usuario.Contrasena;
-
-                    int result = cmd.ExecuteNonQuery();
-                    if (result == 1) { res = "1"; }
-                    cn.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-            return res;
-        }
-
-        public string EliminarUsuario(int Id)
-        {
-            string connectionString = _configuration.GetConnectionString("cadenaSql");
-
-            string res = "0";
-            try
-            {
-                using (SqlConnection cn = new SqlConnection(connectionString))
-                {
-                    SqlCommand cmd = cn.CreateCommand();
-                    cn.Open();
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandText = @"ZB_SP_API_DEL_USUARIO";
-                    cmd.Parameters.Add("@PARAM_IN_ID_USUARIO", SqlDbType.VarChar).Value = Id;
-
-                    int result = cmd.ExecuteNonQuery();
-                    if (result == 1) { res = "1"; }
-                    cn.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-            return res;
-        }
-
-        public string GuardarUsuario(Usuario usuario)
-        {
-            string connectionString = _configuration.GetConnectionString("cadenaSql");
-
-            string res = "0";
-            try
-            {
-                using (SqlConnection cn = new SqlConnection(connectionString))
-                {
-                    SqlCommand cmd = cn.CreateCommand();
-                    cn.Open();
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandText = @"ZB_SP_API_INS_USUARIO";
-                    cmd.Parameters.Add("@PARAM_VC_NOMBRES", SqlDbType.VarChar).Value = usuario.Nombres;
-                    cmd.Parameters.Add("@PARAM_VC_APELLIDOS", SqlDbType.VarChar).Value = usuario.Apellidos;
-                    cmd.Parameters.Add("@PARAM_VC_CORREO", SqlDbType.VarChar).Value = usuario.Correo;
-                    cmd.Parameters.Add("@PARAM_VC_CONTRASENA", SqlDbType.VarChar).Value = usuario.Contrasena;
+                    cmd.CommandText = @"ZB_SP_API_UPD_BUS";
+                    cmd.Parameters.Add("@PARAM_IN_ID_BUS", SqlDbType.Int).Value = oBus.Id;
+                    cmd.Parameters.Add("@PARAM_CH_PLACA", SqlDbType.Char).Value = oBus.Placa;
+                    cmd.Parameters.Add("@PARAM_DE_PESO_NETO", SqlDbType.Decimal).Value = oBus.PesoNeto;
+                    cmd.Parameters.Add("@PARAM_VC_CATEGORIA", SqlDbType.VarChar).Value = oBus.Categoria;
 
                     int result = cmd.ExecuteNonQuery();
                     if (result == 1) { res = "1"; }
@@ -104,11 +47,11 @@ namespace ZbussWebApi.Dao
             return res;
         }
 
-        public List<Usuario> ListarUsuario()
+        public string EliminarBus(int id)
         {
             string connectionString = _configuration.GetConnectionString("cadenaSql");
 
-            List<Usuario> lstUsuarios = new List<Usuario>();
+            string res = "0";
             try
             {
                 using (SqlConnection cn = new SqlConnection(connectionString))
@@ -116,22 +59,75 @@ namespace ZbussWebApi.Dao
                     SqlCommand cmd = cn.CreateCommand();
                     cn.Open();
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandText = @"ZB_SP_API_USUARIOS_SEL";
-                    //cmd.Parameters.Add("@PARAM_IN_ID_USUARIO", SqlDbType.Int).Value = 21;
+                    cmd.CommandText = @"ZB_SP_API_DEL_BUS";
+                    cmd.Parameters.Add("@PARAM_IN_ID_BUS", SqlDbType.Int).Value = id;
+
+                    int result = cmd.ExecuteNonQuery();
+                    if (result == 1) { res = "1"; }
+                    cn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return res;
+        }
+
+        public string GuardarBus(Bus oBus)
+        {
+            string connectionString = _configuration.GetConnectionString("cadenaSql");
+
+            string res = "0";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionString))
+                {
+                    SqlCommand cmd = cn.CreateCommand();
+                    cn.Open();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = @"ZB_SP_API_INS_BUS";
+                    cmd.Parameters.Add("@PARAM_CH_PLACA", SqlDbType.Char).Value = oBus.Placa;
+                    cmd.Parameters.Add("@PARAM_VC_CATEGORIA", SqlDbType.VarChar).Value = oBus.Categoria;
+                    cmd.Parameters.Add("@PARAM_DE_PESO_NETO", SqlDbType.Decimal).Value = oBus.PesoNeto;
+
+                    int result = cmd.ExecuteNonQuery();
+                    if (result == 1) { res = "1"; }
+                    cn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                res = "0";
+            }
+            return res;
+        }
+
+        public List<Bus> ListarBuses()
+        {
+            string connectionString = _configuration.GetConnectionString("cadenaSql");
+
+            List<Bus> lstBuses = new List<Bus>();
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionString))
+                {
+                    SqlCommand cmd = cn.CreateCommand();
+                    cn.Open();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = @"ZB_SP_API_BUSES_SEL";
 
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            Usuario oUsuario = new Usuario();
-                            oUsuario.Id = (reader["IN_ID_USUARIO"] == DBNull.Value) ? 0 : Convert.ToInt32(reader["IN_ID_USUARIO"]);
-                            oUsuario.Nombres = (reader["VC_NOMBRES"] == DBNull.Value) ? String.Empty : Convert.ToString(reader["VC_NOMBRES"]);
-                            oUsuario.Apellidos = (reader["VC_APELLIDOS"] == DBNull.Value) ? String.Empty : Convert.ToString(reader["VC_APELLIDOS"]);
-                            oUsuario.Correo = (reader["VC_CORREO"] == DBNull.Value) ? String.Empty : Convert.ToString(reader["VC_CORREO"]);
-                            string contrasenaBase64 = (reader["VC_CONTRASENA"] == DBNull.Value) ? String.Empty : Convert.ToString(reader["VC_CONTRASENA"]);
-                            oUsuario.Contrasena = Encoding.UTF8.GetString(Convert.FromBase64String(contrasenaBase64));
+                            Bus oBus = new Bus();
+                            oBus.Id = (reader["IN_ID_BUS"] == DBNull.Value) ? 0 : Convert.ToInt32(reader["IN_ID_BUS"]);
+                            oBus.Placa = (reader["CH_PLACA"] == DBNull.Value) ? String.Empty : Convert.ToString(reader["CH_PLACA"]);
+                            oBus.Categoria = (reader["VC_CATEGORIA"] == DBNull.Value) ? String.Empty : Convert.ToString(reader["VC_CATEGORIA"]);
+                            oBus.PesoNeto = (reader["DE_PESO_NETO"] == DBNull.Value) ? 0 : Convert.ToDecimal(reader["DE_PESO_NETO"]);
 
-                            lstUsuarios.Add(oUsuario);
+                            lstBuses.Add(oBus);
                         }
                     }
                     cn.Close();
@@ -139,9 +135,9 @@ namespace ZbussWebApi.Dao
             }
             catch (Exception ex)
             {
-                lstUsuarios = new List<Usuario>();
+                lstBuses = new List<Bus>();
             }
-            return lstUsuarios;
+            return lstBuses;
         }
     }
 }

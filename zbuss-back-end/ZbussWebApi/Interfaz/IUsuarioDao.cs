@@ -1,4 +1,4 @@
-﻿using ZbussWebApi.Models;
+﻿using ZbussWebApi.Models.Usuario;
 
 namespace ZbussWebApi.Interfaz
 {

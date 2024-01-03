@@ -52,6 +52,12 @@ const Login = ({ setUser }) => {
         });
     }
 
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+          validar();
+        }
+    };
+
     return (
         <div className="d-flex align-items-center justify-content-center vh-100">
             <div className="container py-5 h-100">
@@ -61,12 +67,14 @@ const Login = ({ setUser }) => {
                             <div className="card-body p-5 text-center">
                                 <h3 className="mb-5">Inicia Sesión</h3>
                                 <div className="form-outline mb-4">
-                                    <input type="email" id="email" className="form-control form-control-lg" placeholder='Correo Electrónico' value={correo}
-                                    onChange={(e)=> setCorreo(e.target.value)} />
+                                    <input type="email" id="email" className="form-control form-control-lg" placeholder='Correo Electrónico' maxLength={50} value={correo}
+                                    onChange={(e)=> setCorreo(e.target.value)}
+                                    onKeyPress={handleKeyPress} />
                                 </div>
                                 <div className="form-outline mb-4">
-                                    <input type="password" id="contrasena" className="form-control form-control-lg" placeholder='Contraseña' value={contrasena}
-                                    onChange={(e)=> setContrasena(e.target.value)} />
+                                    <input type="password" id="contrasena" className="form-control form-control-lg" placeholder='Contraseña' maxLength={100} value={contrasena}
+                                    onChange={(e)=> setContrasena(e.target.value)}
+                                    onKeyPress={handleKeyPress} />
                                 </div>
                                 {/* <!-- Checkbox --> */}
                                 {/* <div className="form-check d-flex justify-content-start mb-4">
