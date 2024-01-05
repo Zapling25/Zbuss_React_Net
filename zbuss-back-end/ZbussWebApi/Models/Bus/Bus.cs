@@ -6,5 +6,6 @@
         public string Placa { get; set; }
         public decimal PesoNeto { get; set; }
         public string Categoria { get; set; }
+        public int Asientos { get; set; }
     }
 }

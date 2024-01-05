@@ -20,12 +20,18 @@ const navbar = ({ user, setUser }) => {
                         <ul className="navbar-nav">
                             {user !== '' ? (
                                 <>
-                                <li className="nav-item">
+                                <li className="nav-item dropdown">
+                                    <a className="nav-link dropdown-toggle" href="." role="button" data-bs-toggle="dropdown" aria-expanded="false">{user.NombreCompleto}</a>
+                                    <ul className="dropdown-menu">
+                                        <li><Link className="dropdown-item" onClick={LogOut} to="/">Cerrar Sesion</Link></li>
+                                    </ul>
+                                </li>
+                                {/* <li className="nav-item">
                                     <span className='nav-link'>{user.NombreCompleto}</span>
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link" onClick={LogOut} to="/">Cerrar Sesion</Link>
-                                </li>
+                                </li> */}
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/bus">Buses</Link>
                                 </li>

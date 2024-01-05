@@ -13,9 +13,12 @@ const ListarBuses = () => {
     const [placa, setPlaca]=useState('');
     const [pesoNeto, setPesoNeto]=useState('');
     const [categoria, setCategoria]=useState('');
+    const [asientos, setAsientos]=useState('');
     
     const [operacion, setOperacion]=useState(1);
     const [titulo, setTitulo]=useState('');
+
+    const [mostrarAsientos, setMostrarAsientos]=useState(true);
 
     useEffect( ()=>{
         getBuses();
@@ -31,9 +34,11 @@ const ListarBuses = () => {
         setPlaca('');
         setPesoNeto('');
         setCategoria('');
+        setAsientos('');
         setOperacion(op);
         if(op === 1){
             setTitulo('Registrar Bus');
+            setMostrarAsientos(true);
         }
         else if(op === 2){
             setTitulo('Editar Bus');
@@ -41,6 +46,7 @@ const ListarBuses = () => {
             setPlaca(placa);
             setPesoNeto(pesoNeto);
             setCategoria(categoria);
+            setMostrarAsientos(false);
         }
         window.setTimeout(function(){
             document.getElementById('placa').focus();
@@ -54,18 +60,22 @@ const ListarBuses = () => {
         else if(placa.trim().length < 7){
             mostrarAlerta('La placa del bus debe tener 6 dígitos','warning');
         }
-        else if(pesoNeto === 0){
+        else if(pesoNeto.trim() === ''){
             mostrarAlerta('Escribe el peso del bus','warning');
         }
         else if(categoria.trim() === ''){
             mostrarAlerta('Escribe la categoría del bus','warning');
+        }
+        else if(asientos.trim() === ''){
+            mostrarAlerta('Escribe la cantidad de asientos','warning');
         }
         else{
             if(operacion === 1){
                 parametros = {
                     Placa:placa.trim().toUpperCase(),
                     PesoNeto:pesoNeto,
-                    Categoria:categoria.trim().toUpperCase()
+                    Categoria:categoria.trim().toUpperCase(),
+                    Asientos:asientos
                 }
             }
             else{
@@ -73,7 +83,8 @@ const ListarBuses = () => {
                     Id:id,
                     Placa:placa.trim().toUpperCase(),
                     PesoNeto:pesoNeto,
-                    Categoria:categoria.trim().toUpperCase()
+                    Categoria:categoria.trim().toUpperCase(),
+                    Asientos:0
                 }
             }
             enviarSolicitud('POST','/bus/guardar',parametros);
@@ -140,6 +151,7 @@ const ListarBuses = () => {
                                     <th>PLACA</th>
                                     <th>PESO NETO</th>
                                     <th>CATEGORIA</th>
+                                    <th>NRO. ASIENTOS</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -148,8 +160,9 @@ const ListarBuses = () => {
                                     <tr key={bus.id}>
                                         <td>{(i+1)}</td>
                                         <td>{bus.placa}</td>
-                                        <td>{bus.pesoNeto}</td>
+                                        <td>{bus.pesoNeto} Kg.</td>
                                         <td>{bus.categoria}</td>
+                                        <td>{bus.asientos}</td>
                                         <td>
                                             <button onClick={() => openModal(2,bus.id,bus.placa,bus.pesoNeto,bus.categoria)} 
                                                 className='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalBuses'>
@@ -178,7 +191,7 @@ const ListarBuses = () => {
                     <div className='modal-body'>
                         <input type="hidden" id='id'></input>
                         <div className='input-group mb-3'>
-                            <span className='input-group-text'><i className='fa-solid fa-user'></i></span>
+                            <span className='input-group-text'><i className='fa-solid fa-bus'></i></span>
                             <input type="text" id='placa' className='form-control' placeholder='Placa' maxLength={7} value={placa} 
                             onChange={(e)=> {
                                 var inputValue = e.target.value.replace(/[^a-zA-Z0-9]/g, '');
@@ -189,18 +202,36 @@ const ListarBuses = () => {
                             }}/>
                         </div>
                         <div className='input-group mb-3'>
-                            <span className='input-group-text'><i className='fa-solid fa-address-card'></i></span>
-                            <input type="number" id='pesoNeto' className='form-control' placeholder='Peso Neto (kg)' maxLength={6} value={pesoNeto} 
-                            onChange={(e)=> setPesoNeto(e.target.value)}/>
+                            <span className='input-group-text'><i className='fa-solid fa-weight-hanging'></i></span>
+                            <input type="text" id='pesoNeto' className='form-control' placeholder='Peso Neto (kg)' maxLength={5} value={pesoNeto} 
+                            onChange={(e)=> {
+                                const inputValue = e.target.value.replace(/[^0-9]/g, '');
+                                setPesoNeto(inputValue);
+                            }}/>
                         </div>
                         <div className='input-group mb-3'>
-                            <span className='input-group-text'><i className='fa-solid fa-envelope'></i></span>
+                            <span className='input-group-text'><i className='fa-solid fa-tag'></i></span>
                             <input type="text" id='categoria' className='form-control' placeholder='Categoría' maxLength={50} value={categoria} 
                             onChange={(e)=> {
                                 const inputValue = e.target.value.replace(/[^A-Za-z]/g, '');
                                 setCategoria(inputValue.toUpperCase());
                             }}/>
                         </div>
+                        {mostrarAsientos ? (
+                            <>
+                                <div className='input-group mb-3'>
+                                    <span className='input-group-text'><i className='fa-solid fa-couch'></i></span>
+                                    <input type="text" id='asientos' className='form-control' placeholder='Asientos' maxLength={2} value={asientos}
+                                    onChange={(e)=> {
+                                        var inputValue = e.target.value.replace(/[^0-9]/g, '');
+                                        if (parseInt(inputValue) > parseInt(e.target.getAttribute('max'))) {
+                                            inputValue = e.target.getAttribute('max');
+                                        }
+                                        setAsientos(inputValue);
+                                    }}/>
+                                </div>
+                            </>) : <></>
+                        }
                         <div className='d-grid col-6 mx-auto'>
                             <button onClick={() => validar()} className='btn btn-success'>
                                 <i className='fa-solid fa-floppy-disk'></i>
