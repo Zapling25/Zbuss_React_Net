@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IUsuarioDao, UsuarioDao>();
 builder.Services.AddScoped<ILoginDao, LoginDao>();
 builder.Services.AddScoped<IBusDao, BusDao>();
+builder.Services.AddScoped<IAsientoDao, AsientoDao>();
 
 builder.Services.AddCors(options =>
 {

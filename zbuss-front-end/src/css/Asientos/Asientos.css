@@ -1,0 +1,76 @@
+  
+  .containerbus {
+    margin: 50px 0px 50px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .autobus {
+    border: 1px solid #254D44;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 400px;
+    height: auto;
+  }
+
+  .asientos{
+    margin: 25px 10px 25px 10px;
+  }
+  
+  .fila {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .seccion {
+    display: flex;
+    width: 45%;
+    justify-content: space-between;
+  }
+  
+  .asiento {
+    width: 70px;
+    height: 70px;
+    flex-wrap: wrap;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    background: #fcfff4;
+    margin: 5px auto;
+    box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0, 0, 0, 0.5);
+    border-radius: 0.7em;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  .asiento:hover {
+    transform: scale(1.1);
+  }
+
+  .asiento label {
+    font-weight: bold;
+    font-size: larger;
+    color: #254D44;
+    cursor: pointer;
+  }
+
+  /* .asiento label:after {
+    filter: alpha(opacity=0);
+    opacity: 0;
+    content: '';
+    position: absolute;
+    width: 60%;
+    height: 15px;
+    background: #00bf00;
+    background: linear-gradient(top, #0895d3 0%, #0966a8 100%);
+    top: 0px;
+    left: 0px;
+    box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0, 0, 0, 0.5);
+  } */
+  
+  /* .asiento label:hover::after {
+    filter: alpha(opacity=30);
+    opacity: 0.3;
+  } */

@@ -26,12 +26,6 @@ const navbar = ({ user, setUser }) => {
                                         <li><Link className="dropdown-item" onClick={LogOut} to="/">Cerrar Sesion</Link></li>
                                     </ul>
                                 </li>
-                                {/* <li className="nav-item">
-                                    <span className='nav-link'>{user.NombreCompleto}</span>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link" onClick={LogOut} to="/">Cerrar Sesion</Link>
-                                </li> */}
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/bus">Buses</Link>
                                 </li>

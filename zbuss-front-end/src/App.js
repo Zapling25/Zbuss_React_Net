@@ -4,6 +4,7 @@ import Inicio from "./components/Inicio";
 import Login from "./components/Login";
 import ListarUsuarios from './components/ListarUsuarios';
 import ListarBuses from "./components/ListarBuses";
+import ListarAsientos from "./components/ListarAsientos";
 import Navbar from "./navegacion/Navbar";
 
 function App() {
@@ -30,8 +31,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Inicio></Inicio>}></Route>
         <Route path="/login" element={<Login setUser={setUser} ></Login>}></Route>
-        <Route path="/bus" element={<PrivateRoute component={<ListarBuses ></ListarBuses>}></PrivateRoute>}></Route>
-        <Route path="/usuario" element={<PrivateRoute component={<ListarUsuarios ></ListarUsuarios>}></PrivateRoute>}></Route>
+        <Route path="/bus" element={<PrivateRoute component={<ListarBuses />}></PrivateRoute>}></Route>
+        <Route path="/usuario" element={<PrivateRoute component={<ListarUsuarios />}></PrivateRoute>}></Route>
+        <Route path="/asientos/:id" element={<PrivateRoute component={<ListarAsientos />}></PrivateRoute>}></Route>
       </Routes>
     </BrowserRouter>
   );

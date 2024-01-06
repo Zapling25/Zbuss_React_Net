@@ -1,4 +1,5 @@
 import React,{useEffect, useState} from 'react';
+import {Link} from 'react-router-dom'
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -168,6 +169,12 @@ const ListarBuses = () => {
                                                 className='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalBuses'>
                                                 <i className='fa-solid fa-edit'></i>
                                             </button>
+                                            &nbsp;
+                                            <Link to={`/asientos/${bus.id}`}>
+                                                <button className='btn btn-success'>
+                                                    <i className='fa-solid fa-couch'></i>
+                                                </button>
+                                            </Link>
                                             &nbsp;
                                             <button onClick={() => eliminarBus(bus.id,bus.placa)} className='btn btn-danger'>
                                                 <i className='fa-solid fa-trash'></i>
