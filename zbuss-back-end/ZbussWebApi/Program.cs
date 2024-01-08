@@ -8,6 +8,7 @@ builder.Services.AddScoped<IUsuarioDao, UsuarioDao>();
 builder.Services.AddScoped<ILoginDao, LoginDao>();
 builder.Services.AddScoped<IBusDao, BusDao>();
 builder.Services.AddScoped<IAsientoDao, AsientoDao>();
+builder.Services.AddScoped<IGeneralDao, GeneralDao>();
 
 builder.Services.AddCors(options =>
 {
