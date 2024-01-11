@@ -39,6 +39,8 @@ namespace ZbussWebApi.Dao
                             oAsiento.IdBus = (reader["IN_ID_BUS"] == DBNull.Value) ? 0 : Convert.ToInt32(reader["IN_ID_BUS"]);
                             oAsiento.NumeroAsiento = (reader["CH_NUMERO_ASIENTO"] == DBNull.Value) ? String.Empty : Convert.ToString(reader["CH_NUMERO_ASIENTO"]);
                             oAsiento.Inclinacion = (reader["VC_INCLINACION"] == DBNull.Value) ? String.Empty : Convert.ToString(reader["VC_INCLINACION"]);
+                            oAsiento.TipoBloque = (reader["VC_TIPO_BLOQUE"] == DBNull.Value) ? String.Empty : Convert.ToString(reader["VC_TIPO_BLOQUE"]);
+                            oAsiento.Piso = (reader["IN_PISO"] == DBNull.Value) ? 0 : Convert.ToInt32(reader["IN_PISO"]);
                             lstAsientos.Add(oAsiento);
                         }
                     }

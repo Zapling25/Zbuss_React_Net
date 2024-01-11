@@ -90,7 +90,9 @@ namespace ZbussWebApi.Dao
                     cmd.Parameters.Add("@PARAM_CH_PLACA", SqlDbType.Char).Value = oBus.Placa;
                     cmd.Parameters.Add("@PARAM_VC_CATEGORIA", SqlDbType.VarChar).Value = oBus.Categoria;
                     cmd.Parameters.Add("@PARAM_DE_PESO_NETO", SqlDbType.Decimal).Value = oBus.PesoNeto;
-                    cmd.Parameters.Add("@PARAM_IN_ASIENTOS", SqlDbType.Int).Value = oBus.Asientos;
+                    cmd.Parameters.Add("@PARAM_IN_PISOS", SqlDbType.Int).Value = oBus.Pisos;
+                    cmd.Parameters.Add("@PARAM_IN_ASIENTOS_1", SqlDbType.Int).Value = oBus.AsientosPiso1;
+                    cmd.Parameters.Add("@PARAM_IN_ASIENTOS_2", SqlDbType.Int).Value = oBus.AsientosPiso2;
 
                     int result = cmd.ExecuteNonQuery();
                     if (result > 0) { res = "1"; }
@@ -128,6 +130,9 @@ namespace ZbussWebApi.Dao
                             oBus.Categoria = (reader["VC_CATEGORIA"] == DBNull.Value) ? String.Empty : Convert.ToString(reader["VC_CATEGORIA"]);
                             oBus.PesoNeto = (reader["DE_PESO_NETO"] == DBNull.Value) ? 0 : Convert.ToDecimal(reader["DE_PESO_NETO"]);
                             oBus.Asientos = (reader["IN_NUMERO_ASIENTOS"] == DBNull.Value) ? 0 : Convert.ToInt32(reader["IN_NUMERO_ASIENTOS"]);
+                            oBus.AsientosPiso1 = (reader["IN_ASIENTOS_1"] == DBNull.Value) ? 0 : Convert.ToInt32(reader["IN_ASIENTOS_1"]);
+                            oBus.AsientosPiso2 = (reader["IN_ASIENTOS_2"] == DBNull.Value) ? 0 : Convert.ToInt32(reader["IN_ASIENTOS_2"]);
+                            oBus.Pisos = (reader["IN_NUMERO_PISOS"] == DBNull.Value) ? 0 : Convert.ToInt32(reader["IN_NUMERO_PISOS"]);
 
                             lstBuses.Add(oBus);
                         }

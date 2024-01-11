@@ -29,25 +29,38 @@
     width: 45%;
     justify-content: space-between;
   }
-  
-  .asiento {
+
+  .bloque {
     width: 70px;
     height: 70px;
     flex-wrap: wrap;
     display: flex;
     align-content: center;
     justify-content: center;
-    background: #fcfff4;
     margin: 5px auto;
-    box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0, 0, 0, 0.5);
-    border-radius: 0.7em;
-    cursor: pointer;
+    border-radius: 10px;
     transition: transform 0.3s ease;
+    cursor: pointer;
+  }
 
+  .bloque-vacio {
+    width: 70px;
+    margin: 5px auto;
+  }
+  
+  .bloque[data-tipo="01"] {
+    background: #fcfff4;
     font-weight: bold;
     font-size: larger;
     color: #254D44;
-    cursor: pointer;
+    box-shadow: inset 0px 0px 1px white, 0px 1px 3px rgba(0, 0, 0, 0.5);
+  }
+
+  .bloque[data-tipo="02"] {
+    background: #254D44;
+    color: #fcfff4;
+    font-size: xx-large;
+    box-shadow: inset 0px 0px 1px white, 0px 1px 3px rgba(0, 0, 0, 0.5);
   }
 
   .asiento:hover {
@@ -71,6 +84,10 @@
     padding: 10px;
     z-index: 1000;
     /* Asegura que el div esté por encima de otros elementos */
+  }
+
+  .selected {
+    border: 1px solid #254D44;
   }
 
   /* .asiento label:after {

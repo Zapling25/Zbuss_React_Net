@@ -6,5 +6,7 @@
         public int IdBus {  get; set; }
         public string NumeroAsiento {  get; set; }
         public string Inclinacion {  get; set; }
+        public string TipoBloque {  get; set; }
+        public int Piso {  get; set; }
     }
 }
